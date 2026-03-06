@@ -1,0 +1,39 @@
+---
+- name: Prepare Infrastructure for Lens
+  hosts: server
+  # บังคับใช้ become ที่ระดับ Play เลยเพื่อให้ Task 1-3 ใช้สิทธิ์ Root บน VM
+  become: yes
+  tasks:
+    - name: 1. Install K3s with Docker support
+      shell: curl -sfL https://get.k3s.io | sh -s - --docker
+      args:
+        creates: /usr/local/bin/k3s
+
+    - name: 2. Install Helm 3
+      shell: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+      args:
+        creates: /usr/local/bin/helm
+
+    - name: 3. Fetch Kubeconfig to Local
+      fetch:
+        src: /etc/rancher/k3s/k3s.yaml
+        dest: "./k3s-config.yaml"
+        flat: yes
+
+    - name: 4. Update IP in Kubeconfig
+      replace:
+        path: "./k3s-config.yaml"
+        regexp: '127.0.0.1'
+        replace: "{{ ansible_host }}"
+      # สั่งให้รันที่เครื่องตัวเอง และ "ห้าม" สวมสิทธิ์ Root
+      delegate_to: localhost
+      become: no
+
+    - name: 5. Deploy Helm Chart from Local Machine via Shell
+      shell: |
+        export KUBECONFIG=./k3s-config.yaml
+        helm upgrade --install docker-workshop ./workshop-chart \
+          --namespace workshop-livinglab \
+          --create-namespace
+      delegate_to: localhost
+      become: no

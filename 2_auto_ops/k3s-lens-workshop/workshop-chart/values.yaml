@@ -1,0 +1,8 @@
+backend:
+  image: workshop-backend:local
+frontend:
+  image: workshop-frontend:local
+database:
+  user: workshop_user
+  password: workshop_password
+  name: workshop_db
