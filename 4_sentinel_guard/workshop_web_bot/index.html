@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Support Bot Workshop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap');
+
+        body {
+            font-family: 'Kanit', sans-serif;
+        }
+
+        #chat-box::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #chat-box::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-100 h-screen flex items-center justify-center p-4">
+
+    <div
+        class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col h-[650px] border border-gray-200">
+
+        <div class="bg-blue-600 text-white p-4 flex items-center shadow-md z-10">
+            <div
+                class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-blue-600 text-xl shadow-sm">
+                <i class="fa-solid fa-robot"></i>
+            </div>
+            <div class="ml-3">
+                <h1 class="font-medium text-lg leading-tight">IT Support Bot</h1>
+                <p class="text-xs text-blue-200"><i
+                        class="fa-solid fa-circle text-[8px] text-green-400 mr-1"></i>ออนไลน์</p>
+            </div>
+        </div>
+
+        <div id="chat-box" class="flex-1 p-4 overflow-y-auto bg-slate-50 flex flex-col gap-3">
+            <div class="flex items-start gap-2">
+                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 shrink-0">
+                    <i class="fa-solid fa-robot text-sm"></i>
+                </div>
+                <div
+                    class="bg-white border border-gray-200 text-gray-800 p-3 rounded-2xl rounded-tl-none shadow-sm max-w-[80%] text-sm">
+                    สวัสดีครับ! ระบบ IT Support พร้อมให้บริการ 🛠️<br>ลองพิมพ์ <b>"สวัสดี"</b> หรือ <b>"แจ้งปัญหา"</b>
+                    เพื่อเริ่มต้นได้เลยครับ
+                </div>
+            </div>
+        </div>
+
+        <div class="p-3 bg-white border-t border-gray-200 flex items-center gap-2">
+            <input type="text" id="user-input"
+                class="flex-1 bg-gray-100 text-sm rounded-full px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                placeholder="พิมพ์ข้อความที่นี่..." autocomplete="off">
+            <button onclick="sendMessage()"
+                class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors shadow-sm shrink-0">
+                <i class="fa-solid fa-paper-plane text-sm ml-[-2px]"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let userState = null;
+        let ticketDB = [];
+
+        function processMessage(text) {
+            text = text.trim();
+
+            // ==========================================
+            // Mission 3: จัดการ State และสร้าง Ticket
+            // ==========================================
+            // TODO 3: ถ้า userState === "WAIT_FOR_ISSUE"
+            // 1. สร้าง ticketId (ไกด์: Math.random().toString(36).substring(2, 8).toUpperCase())
+            // 2. push ข้อมูล { id: ticketId, issue: text } ลงใน ticketDB
+            // 3. เคลียร์สถานะ: userState = null;
+            // 4. return ข้อความแจ้งผลพร้อม Ticket ID
+
+            // ==========================================
+            // Mission 1: การตอบกลับพื้นฐาน (Keyword Routing)
+            // ==========================================
+            // TODO 1: ถ้า text === "สวัสดี"
+            // ให้ return "สวัสดีครับ IT Support ยินดีให้บริการ พิมพ์ <b>'แจ้งปัญหา'</b> เพื่อเริ่มสร้าง Ticket ครับ"
+
+            // ==========================================
+            // Mission 2: เริ่มต้น Flow รับแจ้งปัญหา
+            // ==========================================
+            // TODO 2: ถ้า text === "แจ้งปัญหา"
+            // 1. เปลี่ยนสถานะ: userState = "WAIT_FOR_ISSUE";
+            // 2. return "รบกวนพิมพ์อธิบายปัญหาที่พบได้เลยครับ 💬:"
+
+
+            // Default Fallback
+            return "ขออภัยครับ บอทไม่เข้าใจคำสั่ง 😥<br>พิมพ์ <b>'สวัสดี'</b> เพื่อดูเมนูครับ";
+        }
+
+        const chatBox = document.getElementById('chat-box');
+        const userInput = document.getElementById('user-input');
+
+        userInput.addEventListener("keypress", function (event) {
+            if (event.key === "Enter") sendMessage();
+        });
+
+        function sendMessage() {
+            let text = userInput.value;
+            if (text.trim() === "") return;
+
+            appendMessage(text, 'user');
+            userInput.value = '';
+
+            setTimeout(() => {
+                let reply = processMessage(text);
+                appendMessage(reply, 'bot');
+            }, 500);
+        }
+
+        function appendMessage(text, sender) {
+            const msgDiv = document.createElement('div');
+
+            if (sender === 'user') {
+                msgDiv.className = 'flex items-start justify-end gap-2 mb-2';
+                msgDiv.innerHTML = `
+                    <div class="bg-blue-600 text-white p-3 rounded-2xl rounded-tr-none shadow-sm max-w-[80%] text-sm">
+                        ${text}
+                    </div>
+                `;
+            } else {
+                msgDiv.className = 'flex items-start gap-2 mb-2';
+                msgDiv.innerHTML = `
+                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 shrink-0">
+                        <i class="fa-solid fa-robot text-sm"></i>
+                    </div>
+                    <div class="bg-white border border-gray-200 text-gray-800 p-3 rounded-2xl rounded-tl-none shadow-sm max-w-[80%] text-sm">
+                        ${text}
+                    </div>
+                `;
+            }
+
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+</body>
+
+</html>
