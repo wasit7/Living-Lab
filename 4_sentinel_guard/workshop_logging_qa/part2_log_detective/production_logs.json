@@ -1,0 +1,65 @@
+[
+	{
+		"timestamp": "2026-03-18T10:00:01Z",
+		"level": "INFO",
+		"event": "login",
+		"user_id": "U001",
+		"ip": "192.168.1.10",
+		"correlation_id": "req-001"
+	},
+	{
+		"timestamp": "2026-03-18T10:00:05Z",
+		"level": "INFO",
+		"event": "add_to_cart",
+		"user_id": "U001",
+		"item": "iPhone 16",
+		"correlation_id": "req-002"
+	},
+	{
+		"timestamp": "2026-03-18T10:00:08Z",
+		"level": "ERROR",
+		"event": "checkout_failed",
+		"user_id": "U001",
+		"reason": "timeout",
+		"correlation_id": "req-003"
+	},
+	{
+		"timestamp": "2026-03-18T10:01:10Z",
+		"level": "INFO",
+		"event": "login",
+		"user_id": "U002",
+		"ip": "192.168.1.15",
+		"correlation_id": "req-004"
+	},
+	{
+		"timestamp": "2026-03-18T10:01:15Z",
+		"level": "ERROR",
+		"event": "checkout_failed",
+		"user_id": "U002",
+		"reason": "insufficient_funds",
+		"correlation_id": "req-005"
+	},
+	{
+		"timestamp": "2026-03-18T10:02:00Z",
+		"level": "ERROR",
+		"event": "checkout_failed",
+		"user_id": "U003",
+		"reason": "timeout",
+		"correlation_id": "req-006"
+	},
+	{
+		"timestamp": "2026-03-18T10:02:05Z",
+		"level": "ERROR",
+		"event": "database_connection_lost",
+		"service": "payment_db",
+		"correlation_id": "req-007"
+	},
+	{
+		"timestamp": "2026-03-18T10:02:10Z",
+		"level": "ERROR",
+		"event": "checkout_failed",
+		"user_id": "U004",
+		"reason": "timeout",
+		"correlation_id": "req-008"
+	}
+]
