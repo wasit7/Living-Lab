@@ -76,8 +76,6 @@ To remove generated logs and configurations:
 rm -rf logs/ grafana_provisioning/ loki-config.yaml promtail-config.yaml docker-compose.yaml gen_logs.py
 ```
 
-```
-
 ---
 
 ### User Instructions (Practical Guide)
@@ -99,4 +97,3 @@ I have enabled **Anonymous Admin** access in the script. You will not be prompte
 * **Permission issues?** If running on Linux, the `chmod 777 logs` command in the script is vital because the Docker user (usually UID 1000) needs to read files created by your local user.
 
 Would you like me to create a **Python template** for a FastAPI or Flask app that uses this logging format directly instead of the mock generator?
-```
