@@ -1,5 +1,5 @@
 
-<img src="demo.png" width="60%">
+<img src="demo.png" width="100%">
 
 # 📊 Grafana + Loki + Promtail: Centralized JSON Logging Demo
 
