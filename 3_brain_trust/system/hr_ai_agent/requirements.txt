@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+python-multipart
+dspy-ai
+litellm
+PyMuPDF
+httpx
+openai
+pydantic
+pandas
+numpy
+qdrant-client
+llama-index-embeddings-openai-like
+pyarrow
+streamlit
+requests

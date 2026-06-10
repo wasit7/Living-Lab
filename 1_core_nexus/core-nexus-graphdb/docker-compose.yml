@@ -1,0 +1,29 @@
+services:
+  neo4j:
+    image: neo4j:5
+    container_name: nexus-neo4j
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      - NEO4J_AUTH=neo4j/nexus2026
+    volumes:
+      - neo4j_data:/data
+    restart: unless-stopped
+
+  jupyter:
+    build: .
+    container_name: nexus-jupyter
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    command: start-notebook.sh --IdentityProvider.token='' --ServerApp.password=''
+    depends_on:
+      - neo4j
+    restart: unless-stopped
+
+volumes:
+  neo4j_data:
